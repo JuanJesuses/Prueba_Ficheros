@@ -24,7 +24,7 @@ public class Vehiculos implements Serializable{
 	private Vehiculo[] vehiculos;
 	private final int MAX_VEHICULOS = 20;
 	private final String FICHERO_VEHICULOS = "/home/john/Escritorio/vehiculos.dat";
-	
+	private final String MIERDA = "mierda";
 	/**
 	 * Constructor de la clase que crea el array de Vehiculos
 	 * y lo inicializa a MAX_VEHICULOS
