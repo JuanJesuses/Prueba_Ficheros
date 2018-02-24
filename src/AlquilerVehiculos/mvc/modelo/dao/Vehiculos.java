@@ -1,5 +1,12 @@
 package AlquilerVehiculos.mvc.modelo.dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import AlquilerVehiculos.mvc.modelo.dominio.ExcepcionAlquilerVehiculos;
@@ -16,6 +23,7 @@ public class Vehiculos implements Serializable{
 
 	private Vehiculo[] vehiculos;
 	private final int MAX_VEHICULOS = 20;
+	private final String FICHERO_VEHICULOS = "/home/john/Escritorio/vehiculos.dat";
 	
 	/**
 	 * Constructor de la clase que crea el array de Vehiculos
@@ -31,6 +39,41 @@ public class Vehiculos implements Serializable{
 	 */
 	public Vehiculo[] getVehiculos() {
 		return vehiculos.clone();
+	}
+	
+	public void leerVehiculos() {
+		File fichero = new File(FICHERO_VEHICULOS);
+		ObjectInputStream entrada;
+		
+		try {
+			entrada = new ObjectInputStream (new FileInputStream(fichero));
+			try {
+				vehiculos = (Vehiculo[])entrada.readObject();
+				entrada.close();
+				System.out.println("Fichero de vehículos leído correctamente.");
+			}catch(ClassNotFoundException e) {
+				System.out.println("No se encuentra la calse que hay que leer.");
+			}catch (IOException e) {
+				System.out.println("Error inesperado de Entrada / Salida.");
+			}
+		}catch (IOException e) {
+			System.out.println("Error, no se puede abrir e fichero de vehículos.");
+		}
+	}
+	
+	public void escribirVehiculos() {
+		File fichero = new File(FICHERO_VEHICULOS);
+		
+		try {
+			ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream(fichero));
+			salida.writeObject((Vehiculo[])vehiculos);
+			salida.close();
+			System.out.println("Fichero de vehículos escrito satisfactoriamente.");
+		}catch (FileNotFoundException e) {
+			System.out.println("No se puede crear el fichero de vehículos.");
+		}catch (IOException e) {
+			System.out.println("Error inesperado de Entrada / Salida.");
+		}
 	}
 	
 	/**
